@@ -22,8 +22,8 @@
 
 2. **运行游戏**
 
-   ```powershell
-   irm https://github.com/ZXCLF/Minesweeper_in_PowerShell/raw/refs/heads/main/Minesweeper_in_PowerShell.ps1 | iex # 适用于 Windows 8 及以上 
+```powershell
+   irm https://github.com/ZXCLF/Minesweeper_in_PowerShell/raw/refs/heads/main/Minesweeper_in_PowerShell.ps1 | iex # Windows 8及以上 
 ```
 
 ### 方法二：临时运行（不修改执行策略）
