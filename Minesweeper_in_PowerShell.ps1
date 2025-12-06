@@ -1,4 +1,5 @@
 # Minesweeper in PowerShell
+# 修复空格和回车键问题
 
 $global:box = @()
 $global:floors = @()
@@ -225,22 +226,20 @@ function Open-Cell($x, $y) {
 }
 
 function Check-Win {
-    $closedCount = 0
-    $minesCount = 0
+    $correctlyOpened = 0
+    $totalSafeCells = ($global:size_l * $global:size_c) - $global:num
     
     for ($i = 1; $i -le $global:size_l; $i++) {
         for ($j = 1; $j -le $global:size_c; $j++) {
-            if ($floors[$i, $j] -eq 0) {
-                $closedCount++
-                if ($box[$i, $j] -eq 9) {
-                    $minesCount++
-                }
+            # 统计已经打开的安全格子数量
+            if ($floors[$i, $j] -eq 1 -and $box[$i, $j] -ne 9) {
+                $correctlyOpened++
             }
         }
     }
     
-    # 胜利条件：所有非地雷格子都打开了
-    if (($closedCount -eq $minesCount) -and ($minesCount -eq $global:num)) {
+    # 胜利条件：所有安全格子（非地雷格子）都打开了
+    if ($correctlyOpened -eq $totalSafeCells) {
         $global:over = 1
     }
 }
