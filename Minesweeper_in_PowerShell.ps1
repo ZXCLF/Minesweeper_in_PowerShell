@@ -1,5 +1,4 @@
 # Minesweeper in PowerShell
-# ÐÞ¸´¿Õ¸ñºÍ»Ø³µ¼üÎÊÌâ
 
 $global:box = @()
 $global:floors = @()
@@ -12,7 +11,7 @@ $global:num = 0
 
 function Show-Banner {
     Clear-Host
-    Write-Host "=== PowerShell É¨À×ÓÎÏ· ===" -ForegroundColor Cyan
+    Write-Host "=== PowerShell æ‰«é›·æ¸¸æˆ ===" -ForegroundColor Cyan
     Write-Host
 }
 
@@ -24,10 +23,10 @@ function Get-ValidInput($prompt, $min, $max) {
             if ($value -ge $min -and $value -le $max) {
                 return $value
             }
-            Write-Host "ÊäÈë´íÎó£ºÇëÊäÈë$minµ½$maxÖ®¼äµÄÊý×Ö" -ForegroundColor Red
+            Write-Host "è¾“å…¥é”™è¯¯ï¼šè¯·è¾“å…¥$minåˆ°$maxä¹‹é—´çš„æ•°å­—" -ForegroundColor Red
         }
         catch {
-            Write-Host "ÊäÈë´íÎó£ºÇëÊäÈëÓÐÐ§µÄÊý×Ö" -ForegroundColor Red
+            Write-Host "è¾“å…¥é”™è¯¯ï¼šè¯·è¾“å…¥æœ‰æ•ˆçš„æ•°å­—" -ForegroundColor Red
         }
     }
 }
@@ -35,24 +34,24 @@ function Get-ValidInput($prompt, $min, $max) {
 function Make-Game {
     Show-Banner
     
-    # »ñÈ¡ÓÎÏ·²ÎÊý
-    $global:size_l = Get-ValidInput "ÇëÊäÈëÐÐÊý(1-30)" 1 30
-    $global:size_c = Get-ValidInput "ÇëÊäÈëÁÐÊý(1-30)" 1 30
-    $maxMines = $size_l * $size_c - 9  # ÖÁÉÙ±£Áô9¸ö°²È«¸ñ×Ó
+    # èŽ·å–æ¸¸æˆå‚æ•°
+    $global:size_l = Get-ValidInput "è¯·è¾“å…¥è¡Œæ•°(1-30)" 1 30
+    $global:size_c = Get-ValidInput "è¯·è¾“å…¥åˆ—æ•°(1-30)" 1 30
+    $maxMines = $size_l * $size_c - 9  # è‡³å°‘ä¿ç•™9ä¸ªå®‰å…¨æ ¼å­
     
     while ($true) {
-        $global:num = Get-ValidInput "ÇëÊäÈëµØÀ×ÊýÁ¿(1-$maxMines)" 1 $maxMines
+        $global:num = Get-ValidInput "è¯·è¾“å…¥åœ°é›·æ•°é‡(1-$maxMines)" 1 $maxMines
         if ($global:num -le $maxMines) {
             break
         }
-        Write-Host "µØÀ×Ì«¶à£¡×î¶àÖ»ÄÜÓÐ $maxMines ¸öµØÀ×" -ForegroundColor Red
+        Write-Host "åœ°é›·å¤ªå¤šï¼æœ€å¤šåªèƒ½æœ‰ $maxMines ä¸ªåœ°é›·" -ForegroundColor Red
     }
     
-    # ³õÊ¼»¯Êý×é
+    # åˆå§‹åŒ–æ•°ç»„
     $global:box = New-Object 'object[,]' ($size_l + 2), ($size_c + 2)
     $global:floors = New-Object 'object[,]' ($size_l + 2), ($size_c + 2)
     
-    # Ëæ»ú·ÅÖÃµØÀ×
+    # éšæœºæ”¾ç½®åœ°é›·
     $random = New-Object System.Random
     $minesPlaced = 0
     
@@ -66,7 +65,7 @@ function Make-Game {
         }
     }
     
-    # ¼ÆËãÖÜÎ§µØÀ×Êý
+    # è®¡ç®—å‘¨å›´åœ°é›·æ•°
     for ($i = 1; $i -le $size_l; $i++) {
         for ($j = 1; $j -le $size_c; $j++) {
             if ($box[$i, $j] -ne 9) {
@@ -100,7 +99,7 @@ function Get-NumberColor($number) {
 }
 
 function Print-Game {
-    # ´òÓ¡ÁÐºÅ
+    # æ‰“å°åˆ—å·
     Write-Host "  " -NoNewline
     for ($j = 1; $j -le $global:size_c; $j++) {
         Write-Host ("   {0,2}" -f $j) -NoNewline
@@ -113,15 +112,15 @@ function Print-Game {
     }
     Write-Host
     
-    # ´òÓ¡ÓÎÏ·ÇøÓò
+    # æ‰“å°æ¸¸æˆåŒºåŸŸ
     for ($i = 1; $i -le $global:size_l; $i++) {
         Write-Host ("{0,2}> " -f $i) -NoNewline
         
         for ($j = 1; $j -le $global:size_c; $j++) {
             if ($floors[$i, $j] -eq 1) {
-                # ÒÑ´ò¿ªµÄ¸ñ×Ó
+                # å·²æ‰“å¼€çš„æ ¼å­
                 if ($box[$i, $j] -eq 9) {
-                    # µØÀ× - ºìÉ«±³¾°
+                    # åœ°é›· - çº¢è‰²èƒŒæ™¯
                     if ($i -eq $X -and $j -eq $Y) {
                         Write-Host " >" -NoNewline -BackgroundColor Red
                         Write-Host "X" -NoNewline -BackgroundColor Red
@@ -133,7 +132,7 @@ function Print-Game {
                     }
                 }
                 else {
-                    # Êý×Ö»ò¿Õ°×
+                    # æ•°å­—æˆ–ç©ºç™½
                     $color = Get-NumberColor $box[$i, $j]
                     
                     if ($i -eq $X -and $j -eq $Y) {
@@ -163,7 +162,7 @@ function Print-Game {
                 }
             }
             else {
-                # Î´´ò¿ªµÄ¸ñ×Ó
+                # æœªæ‰“å¼€çš„æ ¼å­
                 if ($i -eq $X -and $j -eq $Y) {
                     Write-Host " >?< " -NoNewline -ForegroundColor Yellow
                 }
@@ -175,10 +174,10 @@ function Print-Game {
         Write-Host
     }
     
-    # ÏÔÊ¾ÓÎÏ·×´Ì¬
+    # æ˜¾ç¤ºæ¸¸æˆçŠ¶æ€
     Write-Host
-    Write-Host "Î»ÖÃ: ($X, $Y)" -ForegroundColor Cyan
-    Write-Host "Ê£ÓàµØÀ×: $global:num" -ForegroundColor Yellow
+    Write-Host "ä½ç½®: ($X, $Y)" -ForegroundColor Cyan
+    Write-Host "å‰©ä½™åœ°é›·: $global:num" -ForegroundColor Yellow
 }
 
 function Open-Cell($x, $y) {
@@ -186,18 +185,18 @@ function Open-Cell($x, $y) {
         return
     }
     
-    # Èç¹ûÒÑ¾­´ò¿ªÁË£¬²»ÔÙ´¦Àí
+    # å¦‚æžœå·²ç»æ‰“å¼€äº†ï¼Œä¸å†å¤„ç†
     if ($floors[$x, $y] -eq 1) {
         return
     }
     
     if ($box[$x, $y] -eq 9) {
-        # ²Èµ½µØÀ×
+        # è¸©åˆ°åœ°é›·
         $global:over = -1
         return
     }
     
-    # Ê¹ÓÃÕ»½øÐÐÉî¶ÈÓÅÏÈËÑË÷Õ¹¿ª£¨ÕâÑù¸ü·ûºÏÉ¨À×Âß¼­£©
+    # ä½¿ç”¨æ ˆè¿›è¡Œæ·±åº¦ä¼˜å…ˆæœç´¢å±•å¼€ï¼ˆè¿™æ ·æ›´ç¬¦åˆæ‰«é›·é€»è¾‘ï¼‰
     $stack = New-Object System.Collections.Stack
     $stack.Push(@($x, $y))
     
@@ -209,7 +208,7 @@ function Open-Cell($x, $y) {
         if ($floors[$i, $j] -ne 1) {
             $floors[$i, $j] = 1
             
-            # Èç¹ûµ±Ç°¸ñ×ÓÊÇ¿Õ°×£¬Õ¹¿ªÖÜÎ§µÄ¸ñ×Ó
+            # å¦‚æžœå½“å‰æ ¼å­æ˜¯ç©ºç™½ï¼Œå±•å¼€å‘¨å›´çš„æ ¼å­
             if ($box[$i, $j] -eq 0) {
                 for ($k = $i - 1; $k -le $i + 1; $k++) {
                     for ($l = $j - 1; $l -le $j + 1; $l++) {
@@ -240,48 +239,48 @@ function Check-Win {
         }
     }
     
-    # Ê¤ÀûÌõ¼þ£ºËùÓÐ·ÇµØÀ×¸ñ×Ó¶¼´ò¿ªÁË
+    # èƒœåˆ©æ¡ä»¶ï¼šæ‰€æœ‰éžåœ°é›·æ ¼å­éƒ½æ‰“å¼€äº†
     if (($closedCount -eq $minesCount) -and ($minesCount -eq $global:num)) {
         $global:over = 1
     }
 }
 
 function Get-PlayerInput {
-    # ¼ò»¯ÊäÈë´¦Àí£¬Ê¹ÓÃ¸ü¿É¿¿µÄ·½·¨
-    Write-Host "¿ØÖÆ: W/A/S/D»ò·½Ïò¼üÒÆ¶¯£¬¿Õ¸ñ/»Ø³µ´ò¿ª¸ñ×Ó£¬QÍË³ö" -ForegroundColor Gray
+    # ç®€åŒ–è¾“å…¥å¤„ç†ï¼Œä½¿ç”¨æ›´å¯é çš„æ–¹æ³•
+    Write-Host "æŽ§åˆ¶: W/A/S/Dæˆ–æ–¹å‘é”®ç§»åŠ¨ï¼Œç©ºæ ¼/å›žè½¦æ‰“å¼€æ ¼å­ï¼ŒQé€€å‡º" -ForegroundColor Gray
     
-    # ¶ÁÈ¡µ¥¸ö×Ö·û
+    # è¯»å–å•ä¸ªå­—ç¬¦
     $key = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     
     switch ($key.VirtualKeyCode) {
-        # W »ò ÉÏ¼ýÍ·
+        # W æˆ– ä¸Šç®­å¤´
         87 { if ($global:X -gt 1) { $global:X-- } }
         38 { if ($global:X -gt 1) { $global:X-- } }
         
-        # S »ò ÏÂ¼ýÍ·
+        # S æˆ– ä¸‹ç®­å¤´
         83 { if ($global:X -lt $global:size_l) { $global:X++ } }
         40 { if ($global:X -lt $global:size_l) { $global:X++ } }
         
-        # A »ò ×ó¼ýÍ·
+        # A æˆ– å·¦ç®­å¤´
         65 { if ($global:Y -gt 1) { $global:Y-- } }
         37 { if ($global:Y -gt 1) { $global:Y-- } }
         
-        # D »ò ÓÒ¼ýÍ·
+        # D æˆ– å³ç®­å¤´
         68 { if ($global:Y -lt $global:size_c) { $global:Y++ } }
         39 { if ($global:Y -lt $global:size_c) { $global:Y++ } }
         
-        # ¿Õ¸ñ»ò»Ø³µ - ´ò¿ª¸ñ×Ó
+        # ç©ºæ ¼æˆ–å›žè½¦ - æ‰“å¼€æ ¼å­
         32 { return $true }
         13 { return $true }
         
-        # Q - ÍË³öÓÎÏ·
+        # Q - é€€å‡ºæ¸¸æˆ
         81 { $global:over = 2; return $false }
         
-        # Enter¼ü£¨Ð¡¼üÅÌ£©
+        # Enteré”®ï¼ˆå°é”®ç›˜ï¼‰
         10 { return $true }
     }
     
-    # ÆäËû°´¼ü¼ÌÐøÓÎÏ·
+    # å…¶ä»–æŒ‰é”®ç»§ç»­æ¸¸æˆ
     return $false
 }
 
@@ -300,7 +299,7 @@ function Game-Loop {
         Show-Banner
         Print-Game
         
-        # µÈ´ýÍæ¼ÒÊäÈë
+        # ç­‰å¾…çŽ©å®¶è¾“å…¥
         $shouldOpen = Get-PlayerInput
         
         if ($shouldOpen) {
@@ -308,41 +307,41 @@ function Game-Loop {
             Check-Win
         }
         
-        # Èç¹ûÍæ¼Ò°´ÁËQÍË³ö
+        # å¦‚æžœçŽ©å®¶æŒ‰äº†Qé€€å‡º
         if ($global:over -eq 2) {
             break
         }
     }
     
-    # ÓÎÏ·½áÊø
+    # æ¸¸æˆç»“æŸ
     Show-Banner
     Show-AllCells
     Print-Game
     
     Write-Host
     if ($global:over -eq 1) {
-        Write-Host "¹§Ï²ÄãÊ¤ÀûÁË£¡" -ForegroundColor Green
+        Write-Host "æ­å–œä½ èƒœåˆ©äº†ï¼" -ForegroundColor Green
     }
     elseif ($global:over -eq -1) {
-        Write-Host "ÄãÔÚ($X,$Y)²Èµ½ÁËµØÀ×£¡ÓÎÏ·½áÊø¡£" -ForegroundColor Red
+        Write-Host "ä½ åœ¨($X,$Y)è¸©åˆ°äº†åœ°é›·ï¼æ¸¸æˆç»“æŸã€‚" -ForegroundColor Red
     }
     else {
-        Write-Host "ÓÎÏ·ÍË³ö¡£" -ForegroundColor Yellow
+        Write-Host "æ¸¸æˆé€€å‡ºã€‚" -ForegroundColor Yellow
     }
     
     Write-Host
-    Write-Host "°´ÈÎÒâ¼üÍË³ö..."
+    Write-Host "æŒ‰ä»»æ„é”®é€€å‡º..."
     $null = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }
 
-# Ö÷³ÌÐòÈë¿Ú
+# ä¸»ç¨‹åºå…¥å£
 try {
-    # ÉèÖÃ¿ØÖÆÌ¨±àÂëÎªUTF-8£¨Èç¹ûÐèÒªÏÔÊ¾ÖÐÎÄ£©
+    # è®¾ç½®æŽ§åˆ¶å°ç¼–ç ä¸ºUTF-8ï¼ˆå¦‚æžœéœ€è¦æ˜¾ç¤ºä¸­æ–‡ï¼‰
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
     Game-Loop
 }
 catch {
-    Write-Host "·¢Éú´íÎó: $_" -ForegroundColor Red
-    Write-Host "°´ÈÎÒâ¼üÍË³ö..."
+    Write-Host "å‘ç”Ÿé”™è¯¯: $_" -ForegroundColor Red
+    Write-Host "æŒ‰ä»»æ„é”®é€€å‡º..."
     $null = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }
